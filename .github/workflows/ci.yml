@@ -1,0 +1,33 @@
+
+name: Personal DevOps CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate Repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          test -f README.md
+          test -f .gitignore
+          echo "All required files exist."
+
+      - name: Display repository structure
+        run: |
+          echo "Repository files:"
+          find . -maxdepth 4 -type f \
+            -not -path './.git/*' \
+            -not -path './.github/workflows/ci.yml' \
+            | sort
